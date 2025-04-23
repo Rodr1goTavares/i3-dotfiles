@@ -94,9 +94,8 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+n exec xrandr --auto --output eDP-1 --mode 1920x1080 --right-of HDMI-1 && i3-msg restart &
 bindsym $mod+m exec xrandr --auto --output HDMI-1 --off && i3-msg restart &
 
-# toggle polybar
-bindsym $mod+o exec $HOME/.config/polybar/launch.sh
-bindsym $mod+p exec killall -q polybar
+# exec i3 config with nvim
+bindsym $mod+o exec --no-startup-id alacritty -e nvim ~/.config/i3/config
 
 # move workspaces between monitors
 bindsym $mod+b move workspace to output right
@@ -108,8 +107,8 @@ bindsym $mod+b move workspace to output right
 #bindsym $mod+d focus child
 
 # run rofi programs
-bindsym $mod+a exec "rofi -show window -no-default-config -config ~/.config/rofi/main.rasi"
-bindsym $mod+d exec "rofi -show drun -no-default-config -config ~/.config/rofi/i3/i3-menu.rasi"
+#bindsym $mod+a exec "rofi -show window -no-default-config -config ~/.config/rofi/main.rasi"
+bindsym $mod+a exec "rofi -show drun -no-default-config -config ~/.config/rofi/i3/i3-menu.rasi"
 bindsym $mod+s exec "rofi -show drun -no-default-config -config ~/.config/rofi/i3/i3-fullscreen-menu.rasi"
 bindsym $mod+x exec "rofi -show drun -no-default-config -config ~/.config/rofi/i3/i3-powermenu.rasi"
 bindsym $mod+c exec "rofi -show drun -no-default-config -config ~/.config/rofi/i3/bookmarks.rasi"
@@ -140,6 +139,9 @@ bindsym XF86ScreenSaver exec xset dpms force off
 bindsym ctrl + F1 exec --no-startup-id alacritty
 bindsym ctrl + F5 exec --no-startup-id kitty
 bindsym ctrl + F2 exec --no-startup-id dmenu_run
+
+#Wallpaper-selector
+bindsym $mod+shift+w exec "~/.config/rofi/i3/wallpaper-selector.sh"
 
 # toggle microphone 
 bindsym ctrl + F3 exec amixer set Capture nocap && dunstify -a "Microphone" "Microphone" "Microphone is muted" -r 100 -i /usr/local/bin/icons/mic-off.svg
@@ -229,20 +231,20 @@ default_border pixel 2
 #border colors
 client.focused #343746 #343746 #F8F8F2 #343746 #343746
 client.focused_inactive #343746 #343746 #F8F8F2 #21222C #21222C
-client.unfocused #343746 #343746 #F8F8F2 #21222C #21222C
+#client.unfocused #343746 #343746 #F8F8F2 #21222C #21222C
 
 ### SETTINGS FOR i3 BAR ###
 
 bar {
-        mode invisible
-        tray_output none
+        output HDMI-1
+        status_command i3blocks
+        tray_output primary
 }
-
 ### SETTINGS FOR i3-gaps ###
 
 # Set inner/outer gaps
-gaps inner 8
-gaps outer 0
+#gaps inner 8
+#gaps outer 0
 
 # Smart gaps (gaps used if only more than one container on the workspace)
 # smart_gaps on
@@ -252,9 +254,9 @@ gaps outer 0
 #smart_borders on
 
 # Press $mod+g to enter the gap mode. Choose o or i for modifying outer/inner gaps. Press one of + / - (in-/decrement for current workspace) or 0 (remove gaps for current workspace). If you also press Shift with these keys, the change will be global for all workspaces.
-set $mode_gaps Gaps: (o) outer, (i) inner
-set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
-set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
+#set $mode_gaps Gaps: (o) outer, (i) inner
+#set $mode_gaps_outer Outer Gaps: +|-|0 (local), Shift + +|-|0 (global)
+#set $mode_gaps_inner Inner Gaps: +|-|0 (local), Shift + +|-|0 (global)
 bindsym $mod+g mode "$mode_gaps"
 
 mode "$mode_gaps" {
@@ -286,8 +288,4 @@ mode "$mode_gaps_outer" {
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
-}
-
-bar {
-    status_command i3status
 }
